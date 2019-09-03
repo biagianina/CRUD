@@ -102,6 +102,44 @@ namespace CRUD
             Assert.Equal(-1, array.IndexOf(11));
         }
 
+        [Fact]
+        public void InsertElement()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.Insert(1, 7);
+            int[] expected = { 1, 7, 2, 3, 5 };
+            Assert.Equal(expected, array.GetArray());
+        }
+
+        [Fact]
+        public void InsertElementAtEnd()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.Insert(4, 7);
+            int[] expected = { 1, 2, 3, 5, 7 };
+            Assert.Equal(expected, array.GetArray());
+        }
+
+        [Fact]
+        public void ClearElements()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.Clear();
+            int[] expected = new int[0];
+            Assert.Equal(expected,array.GetArray());
+        }
 
     }
 }

@@ -67,5 +67,25 @@ namespace CRUD
             return -1;
         }
 
+        public void Insert(int index, int element)
+        {
+            Array.Resize(ref intArray, intArray.Length + 1);
+            for (int i = 0; i < index; i++)
+            {
+               intArray[i] = intArray[i];
+            }
+
+            for (int i = intArray.Length - 1; i > index; i--)
+            {
+                intArray[i] = intArray[i - 1];
+            }
+
+            intArray[index] = element;
+        }
+
+        public void Clear()
+        {
+            Array.Resize(ref intArray, 0);
+        }
     }
 }
