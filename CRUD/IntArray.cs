@@ -19,11 +19,6 @@ namespace CRUD
             intArray[intArray.Length - 1] = element;
         }
 
-        public int[] GetArray()
-        {
-            return intArray;
-        }
-
         public int Count()
         {
             return intArray.Length;
@@ -41,17 +36,12 @@ namespace CRUD
 
         public bool Contains(int element)
         {
-            bool contains = false;
-
-            for (int i = 0; i < intArray.Length; i++)
+            if(IndexOf(element)!= -1)
             {
-                if (element == intArray[i])
-                {
-                    contains = true;
-                }
+               return true;
             }
-
-            return contains;
+           
+            return false;
         }
 
         public int IndexOf(int element)
@@ -70,15 +60,8 @@ namespace CRUD
         public void Insert(int index, int element)
         {
             Array.Resize(ref intArray, intArray.Length + 1);
-            for (int i = 0; i < index; i++)
-            {
-               intArray[i] = intArray[i];
-            }
 
-            for (int i = intArray.Length - 1; i > index; i--)
-            {
-                intArray[i] = intArray[i - 1];
-            }
+            ShiftRight(index);
 
             intArray[index] = element;
         }
@@ -90,17 +73,9 @@ namespace CRUD
 
         public void Remove(int element)
         {
-            int removedIndex = 0;
-            for (int i = 0; i < intArray.Length; i++)
+            if (Contains(element))
             {
-                if (element == intArray[i])
-                {
-                    removedIndex = i;
-                }
-            }
-            for (int i = removedIndex; i < intArray.Length - 1; i++)
-            {
-                intArray[i] = intArray[i + 1];
+                ShiftLeft(IndexOf(element));
             }
 
             Array.Resize(ref intArray, intArray.Length - 1);
@@ -108,12 +83,26 @@ namespace CRUD
 
         public void RemoveAt(int index)
         {
+            ShiftLeft(index);
+
+            Array.Resize(ref intArray, intArray.Length - 1);
+        }
+
+        private void ShiftLeft(int index)
+        {
             for (int i = index; i < intArray.Length - 1; i++)
             {
                 intArray[i] = intArray[i + 1];
             }
-
-            Array.Resize(ref intArray, intArray.Length - 1);
         }
+
+        private void ShiftRight(int index)
+        {
+            for (int i = intArray.Length - 1; i > index; i--)
+            {
+                intArray[i] = intArray[i - 1];
+            }
+        }
+
     }
 }
