@@ -28,5 +28,10 @@ namespace CRUD
         {
             return intArray.Length;
         }
+
+        public int Element(int index)
+        {
+            return intArray[index];
+        }
     }
 }
