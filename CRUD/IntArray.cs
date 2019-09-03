@@ -87,5 +87,23 @@ namespace CRUD
         {
             Array.Resize(ref intArray, 0);
         }
+
+        public void Remove(int element)
+        {
+            int removedIndex = 0;
+            for (int i = 0; i < intArray.Length; i++)
+            {
+                if (element == intArray[i])
+                {
+                    removedIndex = i;
+                }
+            }
+            for (int i = removedIndex; i < intArray.Length - 1; i++)
+            {
+                intArray[i] = intArray[i + 1];
+            }
+
+            Array.Resize(ref intArray, intArray.Length - 1);
+        }
     }
 }
