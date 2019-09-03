@@ -167,5 +167,31 @@ namespace CRUD
             Assert.Equal(expected, array.GetArray());
         }
 
+        [Fact]
+        public void RemoveElementAtIndex()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.RemoveAt(2);
+            int[] expected = { 1, 2, 5 };
+            Assert.Equal(expected, array.GetArray());
+        }
+
+        [Fact]
+        public void RemoveElementAtLastIndex()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.RemoveAt(3);
+            int[] expected = { 1, 2, 3 };
+            Assert.Equal(expected, array.GetArray());
+        }
+
     }
 }

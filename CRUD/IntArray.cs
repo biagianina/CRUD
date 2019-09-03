@@ -105,5 +105,15 @@ namespace CRUD
 
             Array.Resize(ref intArray, intArray.Length - 1);
         }
+
+        public void RemoveAt(int index)
+        {
+            for (int i = index; i < intArray.Length - 1; i++)
+            {
+                intArray[i] = intArray[i + 1];
+            }
+
+            Array.Resize(ref intArray, intArray.Length - 1);
+        }
     }
 }
