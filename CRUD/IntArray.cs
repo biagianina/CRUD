@@ -23,6 +23,10 @@ namespace CRUD
         {
             return intArray;
         }
-        
+
+        public int Count()
+        {
+            return intArray.Length;
+        }
     }
 }
