@@ -33,5 +33,39 @@ namespace CRUD
         {
             return intArray[index];
         }
+
+        public void SetElement(int index, int element)
+        {
+            intArray[index] = element;
+        }
+
+        public bool Contains(int element)
+        {
+            bool contains = false;
+
+            for (int i = 0; i < intArray.Length; i++)
+            {
+                if (element == intArray[i])
+                {
+                    contains = true;
+                }
+            }
+
+            return contains;
+        }
+
+        public int IndexOf(int element)
+        {
+            for (int i = 0; i < intArray.Length; i++)
+            {
+                if (element == intArray[i])
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
     }
 }

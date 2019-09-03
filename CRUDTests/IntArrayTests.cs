@@ -45,5 +45,63 @@ namespace CRUD
             array.Add(5);
             Assert.Equal(3, array.Element(2));
         }
+
+        [Fact]
+        public void SetElementOfAnIndex()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.SetElement(2, 4);
+            Assert.Equal(4, array.Element(2));
+        }
+
+        [Fact]
+        public void ReturnsTrueIfElementIsContained()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            Assert.True(array.Contains(2));
+        }
+
+        [Fact]
+        public void ReturnsFalseIfElementIsNotContained()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            Assert.False(array.Contains(11));
+        }
+
+        [Fact]
+        public void IndexOfExistingElement()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            Assert.Equal(2, array.IndexOf(3));
+        }
+
+        [Fact]
+        public void IndexOfNonExistingElement()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            Assert.Equal(-1, array.IndexOf(11));
+        }
+
+
     }
 }
