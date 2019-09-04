@@ -10,13 +10,23 @@ namespace CRUD
 
         public IntArray()
         {
-            intArray = new int[0];
+            intArray = new int[4];
         }
 
         public void Add(int element)
         {
-            Array.Resize(ref intArray, intArray.Length + 1);
-            intArray[intArray.Length - 1] = element;
+            for(int i = 0; i < intArray.Length; i++)
+            {
+                if(intArray[intArray.Length - 1] != 0)
+                {
+                    Array.Resize(ref intArray, intArray.Length * 2);
+                }
+                else if(intArray[i] == 0)
+                {
+                    intArray[i] = element;
+                    break;
+                }
+            }
         }
 
         public int Count()
@@ -36,12 +46,7 @@ namespace CRUD
 
         public bool Contains(int element)
         {
-            if(IndexOf(element)!= -1)
-            {
-               return true;
-            }
-           
-            return false;
+            return IndexOf(element)!= -1 ? true : false;
         }
 
         public int IndexOf(int element)
@@ -59,7 +64,10 @@ namespace CRUD
 
         public void Insert(int index, int element)
         {
-            Array.Resize(ref intArray, intArray.Length + 1);
+            if (intArray[intArray.Length - 1] != 0)
+            {
+                Array.Resize(ref intArray, intArray.Length * 2);
+            }
 
             ShiftRight(index);
 
@@ -73,19 +81,15 @@ namespace CRUD
 
         public void Remove(int element)
         {
-            if (Contains(element))
+            if (IndexOf(element) != -1)
             {
-                ShiftLeft(IndexOf(element));
+                RemoveAt(IndexOf(element));
             }
-
-            Array.Resize(ref intArray, intArray.Length - 1);
         }
 
         public void RemoveAt(int index)
         {
             ShiftLeft(index);
-
-            Array.Resize(ref intArray, intArray.Length - 1);
         }
 
         private void ShiftLeft(int index)

@@ -30,7 +30,7 @@ namespace CRUD
             var array = new IntArray();
             array.Add(1);
             array.Add(2);
-            Assert.Equal(2, array.Count());
+            Assert.Equal(4, array.Count());
         }
 
         [Fact]
@@ -122,8 +122,12 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Insert(4, 7);
+            array.Insert(5, 9);
             Assert.True(array.Contains(7));
             Assert.Equal(4, array.IndexOf(7));
+            Assert.True(array.Contains(9));
+            Assert.Equal(5, array.IndexOf(9));
+            Assert.Equal(8, array.Count());
         }
 
         [Fact]
@@ -147,7 +151,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Remove(2);
-            Assert.Equal(3, array.Count());
+            Assert.Equal(4, array.Count());
         }
 
         [Fact]
@@ -159,8 +163,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Remove(5);
-            int[] expected = { 1, 2, 3 };
-            Assert.Equal(3, array.Count());
+            Assert.Equal(4, array.Count());
         }
 
         [Fact]
@@ -172,7 +175,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.RemoveAt(2);
-            Assert.Equal(3, array.Count());
+            Assert.Equal(4, array.Count());
         }
 
         [Fact]
@@ -184,8 +187,19 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.RemoveAt(3);
-            int[] expected = { 1, 2, 3 };
-            Assert.Equal(3, array.Count());
+            Assert.Equal(4, array.Count());
+        }
+
+        [Fact]
+        public void LengthIsDoubleForFifthElement()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.Add(3);
+            Assert.Equal(8, array.Count());
         }
 
     }
