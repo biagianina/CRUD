@@ -7,6 +7,7 @@ namespace CRUD
     public class IntArray
     {
         private int[] intArray;
+        private int elementsCounter;
 
         public IntArray()
         {
@@ -15,18 +16,19 @@ namespace CRUD
 
         public void Add(int element)
         {
-            for(int i = 0; i < intArray.Length; i++)
+            if(elementsCounter >= 0 && elementsCounter < intArray.Length)
             {
-                if(intArray[intArray.Length - 1] != 0)
-                {
-                    Array.Resize(ref intArray, intArray.Length * 2);
-                }
-                else if(intArray[i] == 0)
-                {
-                    intArray[i] = element;
-                    break;
-                }
+                intArray[elementsCounter] = element;
+                elementsCounter++;
             }
+            else
+            {
+                Array.Resize(ref intArray, intArray.Length * 2);
+                intArray[elementsCounter] = element;
+                elementsCounter++;
+            }
+                
+                    
         }
 
         public int Count()
