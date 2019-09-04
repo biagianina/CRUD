@@ -122,11 +122,9 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Add(4);
-            array.Insert(5, 9);
-            Assert.True(array.Contains(7));
-            Assert.Equal(4, array.IndexOf(7));
+            array.Insert(3, 9);
             Assert.True(array.Contains(9));
-            Assert.Equal(5, array.IndexOf(9));
+            Assert.Equal(3, array.IndexOf(9));
             Assert.Equal(8, array.Count());
         }
 

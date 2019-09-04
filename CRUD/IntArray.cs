@@ -16,19 +16,7 @@ namespace CRUD
 
         public void Add(int element)
         {
-            if(elementsCounter >= 0 && elementsCounter < intArray.Length)
-            {
-                intArray[elementsCounter] = element;
-                elementsCounter++;
-            }
-            else
-            {
-                Array.Resize(ref intArray, intArray.Length * 2);
-                intArray[elementsCounter] = element;
-                elementsCounter++;
-            }
-                
-                    
+            Insert(elementsCounter, element);
         }
 
         public int Count()
@@ -66,16 +54,15 @@ namespace CRUD
 
         public void Insert(int index, int element)
         {
-            if (elementsCounter == intArray.Length)
-            {
-                Array.Resize(ref intArray, intArray.Length * 2);
-            }
+            ResizeArray();
 
             ShiftRight(index);
 
             intArray[index] = element;
-        }
 
+            elementsCounter++;
+        }
+        
         public void Clear()
         {
             Array.Resize(ref intArray, 0);
@@ -92,6 +79,14 @@ namespace CRUD
         public void RemoveAt(int index)
         {
             ShiftLeft(index);
+        }
+
+        private void ResizeArray()
+        {
+            if (elementsCounter == intArray.Length)
+            {
+                Array.Resize(ref intArray, intArray.Length * 2);
+            }
         }
 
         private void ShiftLeft(int index)
