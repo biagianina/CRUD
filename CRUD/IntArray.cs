@@ -20,16 +20,12 @@ namespace CRUD
 
         public int Count { get; private set; }
 
-        public int Element(int index)
+        public int this[int index]
         {
-            return intArray[index];
+            get => intArray[index];
+            set => intArray[index] = value;
         }
-
-        public void SetElement(int index, int element)
-        {
-            intArray[index] = element;
-        }
-
+        
         public bool Contains(int element)
         {
             return IndexOf(element)!= -1;

@@ -41,7 +41,7 @@ namespace CRUD
             array.Add(2);
             array.Add(3);
             array.Add(5);
-            Assert.Equal(3, array.Element(2));
+            Assert.Equal(3, array[2]);
         }
 
         [Fact]
@@ -52,8 +52,8 @@ namespace CRUD
             array.Add(2);
             array.Add(3);
             array.Add(5);
-            array.SetElement(2, 4);
-            Assert.Equal(4, array.Element(2));
+            array[2]= 4;
+            Assert.Equal(4, array[2]);
         }
 
         [Fact]
