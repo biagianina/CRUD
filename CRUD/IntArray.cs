@@ -66,7 +66,7 @@ namespace CRUD
 
         public void Insert(int index, int element)
         {
-            if (intArray[intArray.Length - 1] != 0)
+            if (elementsCounter == intArray.Length)
             {
                 Array.Resize(ref intArray, intArray.Length * 2);
             }

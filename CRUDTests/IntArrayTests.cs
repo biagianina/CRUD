@@ -202,5 +202,17 @@ namespace CRUD
             Assert.Equal(8, array.Count());
         }
 
+        [Fact]
+        public void LengthIsDoubledForInsertingElementInACompleteArray()
+        {
+            var array = new IntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(5);
+            array.Insert(3, 2);
+            Assert.Equal(8, array.Count());
+        }
+
     }
 }
