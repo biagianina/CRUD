@@ -7,7 +7,6 @@ namespace CRUD
     public class IntArray
     {
         private int[] intArray;
-        private int elementsCounter;
 
         public IntArray()
         {
@@ -16,13 +15,10 @@ namespace CRUD
 
         public void Add(int element)
         {
-            Insert(elementsCounter, element);
+            Insert(Count, element);
         }
 
-        public int Count()
-        {
-            return intArray.Length;
-        }
+        public int Count { get; private set; }
 
         public int Element(int index)
         {
@@ -36,7 +32,7 @@ namespace CRUD
 
         public bool Contains(int element)
         {
-            return IndexOf(element)!= -1 ? true : false;
+            return IndexOf(element)!= -1;
         }
 
         public int IndexOf(int element)
@@ -60,12 +56,13 @@ namespace CRUD
 
             intArray[index] = element;
 
-            elementsCounter++;
+            Count++;
         }
         
         public void Clear()
         {
             Array.Resize(ref intArray, 0);
+            Count = 0;
         }
 
         public void Remove(int element)
@@ -79,11 +76,12 @@ namespace CRUD
         public void RemoveAt(int index)
         {
             ShiftLeft(index);
+            Count--;
         }
 
         private void ResizeArray()
         {
-            if (elementsCounter == intArray.Length)
+            if (Count == intArray.Length)
             {
                 Array.Resize(ref intArray, intArray.Length * 2);
             }

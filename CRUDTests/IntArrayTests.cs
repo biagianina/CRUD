@@ -30,7 +30,7 @@ namespace CRUD
             var array = new IntArray();
             array.Add(1);
             array.Add(2);
-            Assert.Equal(4, array.Count());
+            Assert.Equal(2, array.Count);
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace CRUD
             array.Insert(3, 9);
             Assert.True(array.Contains(9));
             Assert.Equal(3, array.IndexOf(9));
-            Assert.Equal(8, array.Count());
+            Assert.Equal(6, array.Count);
         }
 
         [Fact]
@@ -137,7 +137,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Clear();
-            Assert.Equal(0,array.Count());
+            Assert.Equal(0,array.Count);
         }
 
         [Fact]
@@ -149,7 +149,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Remove(2);
-            Assert.Equal(4, array.Count());
+            Assert.Equal(3, array.Count);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Remove(5);
-            Assert.Equal(4, array.Count());
+            Assert.Equal(3, array.Count);
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.RemoveAt(2);
-            Assert.Equal(4, array.Count());
+            Assert.Equal(3, array.Count);
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.RemoveAt(3);
-            Assert.Equal(4, array.Count());
+            Assert.Equal(3, array.Count);
         }
 
         [Fact]
@@ -197,7 +197,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Add(3);
-            Assert.Equal(8, array.Count());
+            Assert.Equal(5, array.Count);
         }
 
         [Fact]
@@ -209,7 +209,7 @@ namespace CRUD
             array.Add(3);
             array.Add(5);
             array.Insert(3, 2);
-            Assert.Equal(8, array.Count());
+            Assert.Equal(5, array.Count);
         }
 
     }
