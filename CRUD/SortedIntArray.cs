@@ -6,11 +6,17 @@ namespace CRUD
 {
     public class SortedIntArray : IntArray
     {
-        public void Sort()
+        private void Sort()
         {
-            Sort(array, 0, Count - 1);
+            Sort(array, 0, Count - 1); 
         }
-        
+
+        public override void Insert(int index, int element)
+        {
+            base.Insert(index, element);
+            Sort();
+        }
+
         public int[] Sort(int[] array, int start, int end)
         {
             int i = start;
@@ -39,12 +45,12 @@ namespace CRUD
                     j--;
                 }
 
-                if (start > j)
+                if (start < j)
                 {
                     Sort(array, start, j);
                 }
 
-                if (i > end)
+                if (i < end)
                 {
                     Sort(array, i, end);
                 }
