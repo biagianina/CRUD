@@ -6,11 +6,11 @@ namespace CRUD
 {
     public class IntArray
     {
-        private int[] intArray;
+        protected int[] array;
 
         public IntArray()
         {
-            intArray = new int[4];
+            array = new int[4];
         }
 
         public void Add(int element)
@@ -22,8 +22,8 @@ namespace CRUD
 
         public int this[int index]
         {
-            get => intArray[index];
-            set => intArray[index] = value;
+            get => array[index];
+            set => array[index] = value;
         }
         
         public bool Contains(int element)
@@ -33,9 +33,9 @@ namespace CRUD
 
         public int IndexOf(int element)
         {
-            for (int i = 0; i < intArray.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
-                if (element == intArray[i])
+                if (element == array[i])
                 {
                     return i;
                 }
@@ -50,14 +50,14 @@ namespace CRUD
 
             ShiftRight(index);
 
-            intArray[index] = element;
+            array[index] = element;
 
             Count++;
         }
         
         public void Clear()
         {
-            Array.Resize(ref intArray, 0);
+            Array.Resize(ref array, 0);
             Count = 0;
         }
 
@@ -77,25 +77,25 @@ namespace CRUD
 
         private void ResizeArray()
         {
-            if (Count == intArray.Length)
+            if (Count == array.Length)
             {
-                Array.Resize(ref intArray, intArray.Length * 2);
+                Array.Resize(ref array, array.Length * 2);
             }
         }
 
         private void ShiftLeft(int index)
         {
-            for (int i = index; i < intArray.Length - 1; i++)
+            for (int i = index; i < array.Length - 1; i++)
             {
-                intArray[i] = intArray[i + 1];
+                array[i] = array[i + 1];
             }
         }
 
         private void ShiftRight(int index)
         {
-            for (int i = intArray.Length - 1; i > index; i--)
+            for (int i = array.Length - 1; i > index; i--)
             {
-                intArray[i] = intArray[i - 1];
+                array[i] = array[i - 1];
             }
         }
 
