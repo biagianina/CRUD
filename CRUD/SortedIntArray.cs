@@ -6,57 +6,60 @@ namespace CRUD
 {
     public class SortedIntArray : IntArray
     {
-        private void Sort()
-        {
-            Sort(array, 0, Count - 1); 
-        }
-
         public override void Insert(int index, int element)
         {
-            base.Insert(index, element);
-            Sort();
-        }
-
-        public int[] Sort(int[] array, int start, int end)
-        {
-            int i = start;
-            int j = end;
-            var pivot = array[(i + j) / 2];
-
-            if (i <= j)
+            if (index > 0 && array[index - 1] > element
+                || index < Count && array[index + 1] < element)
             {
-                while (array[i] < pivot)
-                {
-                    i++;
-                }
-
-                while (pivot < array[j])
-                {
-                    j--;
-                }
-
-                if (i <= j)
-                {
-                    var temp = array[j];
-                    array[j] = array[i];
-                    array[i] = temp;
-
-                    i++;
-                    j--;
-                }
-
-                if (start < j)
-                {
-                    Sort(array, start, j);
-                }
-
-                if (i < end)
-                {
-                    Sort(array, i, end);
-                }
+                return;
             }
 
-            return array;
+            base.Insert(index, element);
+        }
+
+        public override int this[int index]
+        {
+            get => base[index];
+            set
+            {
+                if (index > 0 && array[index - 1] > value
+                   || index < Count && array[index + 1] < value)
+                {
+                    return;
+                }
+
+                base[index] = value;
+            }
+        }
+        public override void Add(int element)
+        {
+            base.Add(element);
+            Sort();
+        }
+        private void Sort()
+        {
+            Sort(array);
+        }
+        private void Sort(int[] array)
+        {
+            bool flag = true;
+            int temp;
+            int arrLength = Count;
+
+            for (int i = 1; (i <= (arrLength - 1)) && flag; i++)
+            {
+                flag = false;
+                for (int j = 0; j < (arrLength - 1); j++)
+                {
+                    if (array[j + 1] < array[j])
+                    {
+                        temp = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = temp;
+                        flag = true;
+                    }
+                }
+            }
         }
     }
 }

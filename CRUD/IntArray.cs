@@ -13,14 +13,16 @@ namespace CRUD
             array = new int[4];
         }
 
-        public void Add(int element)
+        public virtual void Add(int element)
         {
-            Insert(Count, element);
+            ResizeArray();
+            array[Count] = element;
+            Count++;
         }
 
         public int Count { get; private set; }
 
-        public int this[int index]
+        public virtual int this[int index]
         {
             get => array[index];
             set => array[index] = value;

@@ -211,6 +211,5 @@ namespace CRUD
             array.Insert(3, 2);
             Assert.Equal(5, array.Count);
         }
-
     }
 }
