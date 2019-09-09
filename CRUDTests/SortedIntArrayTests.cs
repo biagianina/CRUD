@@ -71,7 +71,7 @@ namespace CRUD
             array.Add(1);
             array[1] = 4;
             Assert.Equal(2, array.Count);
-            Assert.Equal(3, array[1]);
+            Assert.Equal(4, array[1]);
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace CRUD
             var array = new SortedIntArray();
             array.Add(3);
             array[0] = 4;
-            Assert.Equal(3, array[0]);
+            Assert.Equal(4, array[0]);
         }
 
         [Fact]
@@ -179,6 +179,17 @@ namespace CRUD
             Assert.Equal(1, array[0]);
             Assert.Equal(3, array[1]);
             Assert.Equal(7, array[2]);
+        }
+
+        [Fact]
+        public void InsertBiggerAtEnd()
+        {
+            var array = new SortedIntArray();
+            array.Add(1);
+            array.Add(2);
+            array.Insert(1, 7);
+            Assert.Equal(1, array[0]);
+            Assert.Equal(2, array[1]);
         }
     }
 }

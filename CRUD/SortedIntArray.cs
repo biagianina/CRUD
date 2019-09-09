@@ -9,7 +9,7 @@ namespace CRUD
         public override void Insert(int index, int element)
         {
             if (index > 0 && array[index - 1] > element
-                || index < Count - 1  && array[index] < element)
+                || index < Count && array[index] < element)
             {
                 return;
             }
