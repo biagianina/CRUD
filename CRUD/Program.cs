@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace CRUD
 {
@@ -6,12 +7,12 @@ namespace CRUD
     {
         static void Main()
         {
-            var array = new ObjectArray { 1, "abcd", 'a', 1.52 };
-            foreach(var i in array)
+            var objectArray = new ObjectArray { 12, 3 };
+            foreach(var obj in objectArray)
             {
-                Console.WriteLine(i);
+                Console.WriteLine(obj);
             }
-            Console.Read();
         }
+
     }
 }

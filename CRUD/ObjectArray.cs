@@ -105,14 +105,17 @@ namespace CRUD
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         public IEnumerator GetEnumerator()
         {
-            return new ObjectEnumerator(objectArray);
+            foreach(var current in objectArray)
+            {
+                if (current is null)
+                {
+                    yield break;
+                }
+
+                yield return current;
+            }
         }
     }
 }
