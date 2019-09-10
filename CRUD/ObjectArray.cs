@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CRUD
 {
-    public class ObjectArray
+    public class ObjectArray : IEnumerable
     {
         object[] objectArray;
 
@@ -47,7 +48,7 @@ namespace CRUD
         {
             for (int i = 0; i < Count; i++)
             {
-                if (element == objectArray[i])
+                if (element.Equals(objectArray[i]))
                 {
                     return i;
                 }
@@ -104,6 +105,14 @@ namespace CRUD
             }
         }
 
-      
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return new ObjectEnumerator(objectArray);
+        }
     }
 }

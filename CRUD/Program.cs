@@ -4,9 +4,14 @@ namespace CRUD
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("Hello World!");
+            var array = new ObjectArray { 1, "abcd", 'a', 1.52 };
+            foreach(var i in array)
+            {
+                Console.WriteLine(i);
+            }
+            Console.Read();
         }
     }
 }

@@ -42,8 +42,8 @@ namespace CRUD
             var objectArray = new ObjectArray();
             objectArray.Add("abcd");
             Assert.Equal(0, objectArray.IndexOf("abcd"));
-            objectArray.Add("test");
-            Assert.Equal(1, objectArray.IndexOf("test"));
+            objectArray.Add(1);
+            Assert.Equal(1, objectArray.IndexOf(1));
 
         }
    
