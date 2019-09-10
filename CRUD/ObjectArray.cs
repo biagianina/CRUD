@@ -107,22 +107,10 @@ namespace CRUD
 
         public IEnumerator GetEnumerator()
         {
-            int count = 0;
-            foreach (var current in objectArray)
+            for(int i = 0; i < Count; i++)
             {
-                count++;
-               
-                if (count > Count)
-                {
-                    yield break;
-                }
-                else
-                {
-                    yield return current;
-                }
+                yield return objectArray[i];
             }
-
-            
         }
     }
 }
