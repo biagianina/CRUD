@@ -23,7 +23,9 @@ namespace CRUD
 
         public int Count {get; private set;}
 
-        public bool IsReadOnly => false;
+        public bool IsReadOnly { get; }
+
+        public bool IsFixedSize { get; }
 
         public T this[int index]
         {
@@ -120,13 +122,7 @@ namespace CRUD
             }
         }
 
-        public bool IsFixedSize
-        {
-            get
-            {
-                return true;
-            }
-        }
+        
 
         private void ResizeArray()
         {
