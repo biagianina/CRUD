@@ -107,10 +107,9 @@ namespace CRUD
                 yield return array[i];
             }
         }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<T>)array).GetEnumerator();
+            return GetEnumerator();
         }
     }
 }
