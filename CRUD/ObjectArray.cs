@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CRUD
 {
-    public class List<T> : IEnumerable<T>
+    public class List<T> : IList<T>
     {
         T[] array;
 
@@ -22,6 +22,8 @@ namespace CRUD
         }
 
         public int Count {get; private set;}
+
+        public bool IsReadOnly => false;
 
         public T this[int index]
         {
@@ -70,13 +72,62 @@ namespace CRUD
             Count--;
         }
 
-        public void Remove(T element)
+        public bool Remove(T element)
         {
-            if (IndexOf(element) != -1)
+            if (IndexOf(element) == -1)
             {
-                RemoveAt(IndexOf(element));
+                return false;
+            }
+
+            RemoveAt(IndexOf(element));
+            return true;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                yield return array[i];
             }
         }
+
+        public void CopyTo(T[] targetArray, int arrayIndex)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                targetArray.SetValue(array[i], arrayIndex++);
+            }
+        }
+
+        public bool IsSynchronized
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public object SyncRoot
+        {
+            get
+            {
+                return this;
+            }
+        }
+
+        public bool IsFixedSize
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         private void ResizeArray()
         {
             if (Count == array.Length)
@@ -99,17 +150,6 @@ namespace CRUD
             {
                 array[i] = array[i - 1];
             }
-        }
-        public IEnumerator<T> GetEnumerator()
-        {
-            for(int i = 0; i < Count; i++)
-            {
-                yield return array[i];
-            }
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
