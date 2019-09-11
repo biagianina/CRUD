@@ -5,50 +5,46 @@ using System.Text;
 
 namespace CRUD
 {
-    public class ObjectArray : IEnumerable
+    public class List<T> : IEnumerable<T>
     {
-        object[] objectArray;
+        T[] array;
 
-        public ObjectArray()
+        public List()
         {
-            this.objectArray = new object[4];
+            this.array = new T[4];
         }
 
-        public void Add(object element)
+        public void Add(T element)
         {
             ResizeArray();
-            objectArray[Count] = element;
+            array[Count] = element;
             Count++;
         }
 
         public int Count {get; private set;}
 
-        public object this[int index]
+        public T this[int index]
         {
-            get => objectArray[index];
-            set
-            {
-                objectArray[index] = value;
-                Count++;
-            }
+            get => array[index];
+            set => array[index] = value;
         }
 
-        public void Insert(int index, object element)
+        public void Insert(int index, T element)
         {
             ResizeArray();
 
             ShiftRight(index);
 
-            objectArray[index] = element;
+            array[index] = element;
 
             Count++;
         }
 
-        public int IndexOf(object element)
+        public int IndexOf(T element)
         {
             for (int i = 0; i < Count; i++)
             {
-                if (element.Equals(objectArray[i]))
+                if (element.Equals(array[i]))
                 {
                     return i;
                 }
@@ -57,14 +53,14 @@ namespace CRUD
             return -1;
         }
 
-        public bool Contains(object element)
+        public bool Contains(T element)
         {
             return IndexOf(element) != -1;
         }
 
         public void Clear()
         {
-            Array.Resize(ref objectArray, 0);
+            Array.Resize(ref array, 0);
             Count = 0;
         }
 
@@ -74,7 +70,7 @@ namespace CRUD
             Count--;
         }
 
-        public void Remove(object element)
+        public void Remove(T element)
         {
             if (IndexOf(element) != -1)
             {
@@ -83,9 +79,9 @@ namespace CRUD
         }
         private void ResizeArray()
         {
-            if (Count == objectArray.Length)
+            if (Count == array.Length)
             {
-                Array.Resize(ref objectArray, Count * 2);
+                Array.Resize(ref array, Count * 2);
             }
         }
 
@@ -93,24 +89,28 @@ namespace CRUD
         {
             for (int i = index; i < Count - 1; i++)
             {
-                objectArray[i] = objectArray[i + 1];
+                array[i] = array[i + 1];
             }
         }
 
         private void ShiftRight(int index)
         {
-            for (int i = objectArray.Length - 1; i > index; i--)
+            for (int i = array.Length - 1; i > index; i--)
             {
-                objectArray[i] = objectArray[i - 1];
+                array[i] = array[i - 1];
             }
         }
-
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             for(int i = 0; i < Count; i++)
             {
-                yield return objectArray[i];
+                yield return array[i];
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<T>)array).GetEnumerator();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace CRUD
     {
         static void Main()
         {
-            var objectArray = new ObjectArray { 12, 3 };
+            var objectArray = new List<int>{ 12, 3 };
             foreach(var obj in objectArray)
             {
                 Console.WriteLine(obj);
