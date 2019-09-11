@@ -76,12 +76,13 @@ namespace CRUD
 
         public bool Remove(T element)
         {
-            if (IndexOf(element) == -1)
+            int index = IndexOf(element);
+            if (index == -1)
             {
                 return false;
             }
 
-            RemoveAt(IndexOf(element));
+            RemoveAt(index);
             return true;
         }
 
