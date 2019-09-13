@@ -16,6 +16,7 @@ namespace CRUD
 
         public void Add(T element)
         {
+            CheckReadOnly();
             ResizeArray();
             array[Count] = element;
             Count++;
@@ -29,12 +30,26 @@ namespace CRUD
 
         public T this[int index]
         {
-            get => array[index];
-            set => array[index] = value;
+            get
+            {
+                CheckIndexOutOfRange(index);
+                return array[index];
+            }
+            set
+            {
+                CheckReadOnly();
+                CheckIndexOutOfRange(index);
+                array[index] = value;
+            }
         }
 
+       
         public void Insert(int index, T element)
         {
+            CheckReadOnly();
+
+            CheckIndexOutOfRange(index);
+
             ResizeArray();
 
             ShiftRight(index);
@@ -64,12 +79,15 @@ namespace CRUD
 
         public void Clear()
         {
+            CheckReadOnly();
             Array.Resize(ref array, 0);
             Count = 0;
         }
 
         public void RemoveAt(int index)
         {
+            CheckReadOnly(); 
+            CheckIndexOutOfRange(index);
             ShiftLeft(index);
             Count--;
         }
@@ -101,6 +119,13 @@ namespace CRUD
 
         public void CopyTo(T[] targetArray, int arrayIndex)
         {
+            CheckIndexOutOfRange(arrayIndex);
+
+            if (Count > targetArray.Length)
+            {
+                throw new ArgumentException();
+            }
+
             for (int i = 0; i < Count; i++)
             {
                 targetArray.SetValue(array[i], arrayIndex++);
@@ -123,8 +148,6 @@ namespace CRUD
             }
         }
 
-        
-
         private void ResizeArray()
         {
             if (Count == array.Length)
@@ -146,6 +169,24 @@ namespace CRUD
             for (int i = array.Length - 1; i > index; i--)
             {
                 array[i] = array[i - 1];
+            }
+        }
+
+        private void CheckIndexOutOfRange(int index)
+        {
+            if (index >= 0 && index < Count)
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException("Index is not in the ranges of the array");
+        }
+
+        private void CheckReadOnly()
+        {
+            if (IsReadOnly)
+            {
+                throw new NotSupportedException("Array is readonly");
             }
         }
     }

@@ -97,5 +97,22 @@ namespace CRUD
 
         }
 
+        [Fact]
+        public void Exceptions()
+        {
+            var targetArray = new char[2];
+            var objectArray = new List<char>
+            {
+                'a',
+                'b',
+                'c',
+                'd'
+            };
+            Assert.Throws<ArgumentOutOfRangeException>(() => objectArray[6]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => objectArray.Insert(-1, 'd'));
+            Assert.Throws<ArgumentOutOfRangeException>(() => objectArray.RemoveAt(5));
+            Assert.Throws<ArgumentException>(() => objectArray.CopyTo(targetArray, 0));
+        }
+
     }
 }
