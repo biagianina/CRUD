@@ -8,6 +8,8 @@ namespace CRUD
     public class List<T> : IList<T>
     {
         T[] array;
+        int counter = 0;
+        private bool isReadOnly = false;
 
         public List()
         {
@@ -24,7 +26,22 @@ namespace CRUD
 
         public int Count {get; private set;}
 
-        public bool IsReadOnly { get; }
+        public bool IsReadOnly
+        {
+            get => isReadOnly;
+            set
+            {
+                if (counter == 0)
+                {
+                    isReadOnly = value;
+                    counter++;
+                }
+                else
+                {
+                    throw new NotSupportedException("Readonly already set");
+                }
+             }
+        }
 
         public bool IsFixedSize { get; }
 
@@ -123,7 +140,7 @@ namespace CRUD
 
             if (Count > targetArray.Length)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Array is bigger than target array");
             }
 
             for (int i = 0; i < Count; i++)

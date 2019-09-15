@@ -16,7 +16,7 @@ namespace CRUD
                 5,
                 6
             };
-            
+
             Assert.Equal(2, objectArray[0]);
             Assert.Equal(1, objectArray[1]);
             Assert.Equal(4, objectArray[2]);
@@ -53,7 +53,7 @@ namespace CRUD
             Assert.Equal(1, objectArray.IndexOf("1"));
 
         }
-   
+
         [Fact]
         public void ClearElements()
         {
@@ -61,12 +61,10 @@ namespace CRUD
             {
                 1
             };
-            objectArray[1] = 1;
-            objectArray[2] = 2;
-            objectArray[3] = 3;
-            objectArray.Add(4);
+            
+            objectArray.Add(5);
             objectArray.Clear();
-            Assert.Equal(0, objectArray.Count);
+            Assert.Empty(objectArray);
         }
 
         [Fact]
@@ -98,21 +96,46 @@ namespace CRUD
         }
 
         [Fact]
-        public void Exceptions()
+        public void ReadOnlyExceptions()
         {
             var targetArray = new char[2];
             var objectArray = new List<char>
+
             {
                 'a',
                 'b',
                 'c',
                 'd'
             };
+
+            objectArray.IsReadOnly = true;
+            Assert.Throws<NotSupportedException>(() => objectArray.Add('s'));
+            Assert.Throws<NotSupportedException>(() => objectArray[1] = 's');
+            Assert.Throws<NotSupportedException>(() => objectArray.Insert(1, 't'));
+            Assert.Throws<NotSupportedException>(() => objectArray.Clear());
+            Assert.Throws<NotSupportedException>(() => objectArray.RemoveAt(0));
+            Assert.Throws<NotSupportedException>(() => objectArray.IsReadOnly = false);
+
+        }
+
+        [Fact]
+        public void OutOfRangeExceptions()
+        {
+            var targetArray = new char[2];
+            var objectArray = new List<char>
+
+            {
+                'a',
+                'b',
+                'c',
+                'd'
+            };
+
             Assert.Throws<ArgumentOutOfRangeException>(() => objectArray[6]);
             Assert.Throws<ArgumentOutOfRangeException>(() => objectArray.Insert(-1, 'd'));
             Assert.Throws<ArgumentOutOfRangeException>(() => objectArray.RemoveAt(5));
             Assert.Throws<ArgumentException>(() => objectArray.CopyTo(targetArray, 0));
-        }
 
+        }
     }
 }
