@@ -8,7 +8,6 @@ namespace CRUD
     public class List<T> : IList<T>
     {
         T[] array;
-        int counter = 0;
         private bool isReadOnly = false;
 
         public List()
@@ -31,10 +30,9 @@ namespace CRUD
             get => isReadOnly;
             set
             {
-                if (counter == 0)
+                if (!isReadOnly)
                 {
                     isReadOnly = value;
-                    counter++;
                 }
                 else
                 {
