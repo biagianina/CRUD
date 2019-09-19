@@ -7,7 +7,7 @@ namespace CRUD
 {
     public class LinkedList<T> : ICollection<T>
     {
-        public LinkedListNode<T> Head;
+        private LinkedListNode<T> Head;
 
         public LinkedList()
         {
