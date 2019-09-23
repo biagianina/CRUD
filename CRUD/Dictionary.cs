@@ -55,12 +55,7 @@ namespace CRUD
                 {
                     if (elements[i] != null &&  elements[i].Value != default && elements[i].Key != default)
                     {
-                        keys[keyCount] = elements[i].Key;
-                        keyCount++;
-                    }
-                    else
-                    {
-                        continue;
+                        keys[keyCount++] = elements[i].Key;
                     }
                 }
 
@@ -77,12 +72,7 @@ namespace CRUD
                 {
                     if (elements[i] != null && elements[i].Value != default && elements[i].Key != default)
                     {
-                        values[valueCount] = elements[i].Value;
-                        valueCount++;
-                    }
-                    else
-                    {
-                        continue;
+                        values[valueCount++] = elements[i].Value;
                     }
                 }
 
@@ -99,29 +89,11 @@ namespace CRUD
             CheckKeyDuplicate(key);
             int bucketNumber = GetBucket(key);
             int elementIndex = CheckFreePosition();
-            if (buckets[bucketNumber] == -1)
-            {
-                if (elementIndex != Count)
-                {
-                    freeIndex = elements[elementIndex].Next;
-                }
-                elements[elementIndex] = new Element<TKey, TValue>(key, value);
-                buckets[bucketNumber] = elementIndex;
-                Count++;
-            }
-            else
-            {
-                if (elementIndex != Count)
-                {
-                    freeIndex = elements[elementIndex].Next;
-                }
-                elements[elementIndex] = new Element<TKey, TValue>(key, value, buckets[bucketNumber]);
-                buckets[bucketNumber] = elementIndex;
-                Count++;
-            }
-        }
 
-        
+            elements[elementIndex] = new Element<TKey, TValue>(key, value, buckets[bucketNumber]);
+            buckets[bucketNumber] = elementIndex;
+            Count++;
+        }
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
@@ -131,15 +103,12 @@ namespace CRUD
         public void Clear()
         {
             Count = 0;
-            for(int i = 0; i < size; i++)
-            {
-                elements[i] = default;
-                buckets[i] = -1;
-            }
+            Array.Fill(buckets, -1);
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
+            
             if (ContainsKey(item.Key))
             {
                 return this[item.Key].Equals(item.Value);
@@ -153,7 +122,6 @@ namespace CRUD
             int bucketNumber = GetBucket(key);
             for (int i = buckets[bucketNumber]; i > -1; i = elements[i].Next)
             {
-                
                 if (elements[i].Key.Equals(key))
                 {
                     return true;
@@ -162,8 +130,6 @@ namespace CRUD
 
             return false;
         }
-
-        
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
@@ -197,44 +163,30 @@ namespace CRUD
             int elementIndex = buckets[bucketNumber];
             var first = elements[elementIndex];
 
-            if (first.Key.Equals(key))
+            for (int i = elementIndex; i > -1; i = first.Next)
             {
-                buckets[bucketNumber] = first.Next;
-                Delete(first);
-                freeIndex = elementIndex;
-                Count--;
-                return true;
-            }
-            else
-            {
-                var current = elements[first.Next];
-                for (int i = first.Next; i > -1; i = current.Next)
+                int previous = i;
+                if (elements[i].Key.Equals(key))
                 {
-                    int previous = i;
-                    if (elements[i].Key.Equals(key))
+                    if (i != previous)
                     {
-                        if (i != previous)
-                        {
-                            elements[previous].Next = elements[i].Next;
-                        }
-                        else
-                        {
-                            first.Next = elements[i].Next;
-                        }
-                        Delete(elements[i]);
-                        freeIndex = i;
-                        Count--;
-                        return true;
+                        elements[previous].Next = elements[i].Next;
                     }
+                    else
+                    {
+                        first.Next = elements[i].Next;
+                    }
+                    Delete(elements[i]);
+                    freeIndex = i;
+                    Count--;
+                    return true;
                 }
             }
-
+            
             return false;
 
         }
-
-        
-
+       
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             return Remove(item.Key);
@@ -257,7 +209,6 @@ namespace CRUD
 
             return value != default;
         }
-
 
         private bool TryGetIndexOfKey(TKey key, out int index)
         {

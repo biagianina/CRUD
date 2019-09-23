@@ -60,6 +60,21 @@ namespace CRUD
             {
                 Console.WriteLine("{0} is {1} years old.\n", customer.Key, customer.Value);
             }
+
+            customersAge.Remove("Vasile");
+
+
+            foreach (var customer in customersAge)
+            {
+                Console.WriteLine("{0} is {1} years old.\n", customer.Key, customer.Value);
+            }
+
+            customersAge.Add("Adina", 20);
+
+            foreach (var customer in customersAge)
+            {
+                Console.WriteLine("{0} is {1} years old.\n", customer.Key, customer.Value);
+            }
         }
     }  
 
