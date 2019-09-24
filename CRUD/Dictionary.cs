@@ -11,7 +11,7 @@ namespace CRUD
         readonly int[] buckets;
         readonly int size;
         int freeIndex = -1;
-        
+
         public Dictionary(int size)
         {
             this.elements = new Element<TKey, TValue>[size];
@@ -50,15 +50,11 @@ namespace CRUD
             get
             {
                 TKey[] keys = new TKey[Count];
-                int keyCount = 0;
-                for (int i = 0; i < size; i++)
+                int keysCounter = 0;
+                foreach (var current in this)
                 {
-                    if (elements[i] != null &&  elements[i].Value != default && elements[i].Key != default)
-                    {
-                        keys[keyCount++] = elements[i].Key;
-                    }
+                    keys[keysCounter++] = current.Key;
                 }
-
                 return keys;
             }
         }
@@ -68,14 +64,10 @@ namespace CRUD
             {
                 TValue[] values = new TValue[Count];
                 int valueCount = 0;
-                for (int i = 0; i < size; i++)
+                foreach (var current in this)
                 {
-                    if (elements[i] != null && elements[i].Value != default && elements[i].Key != default)
-                    {
-                        values[valueCount++] = elements[i].Value;
-                    }
+                    values[valueCount++] = current.Value;
                 }
-
                 return values;
             }
         }
@@ -86,13 +78,16 @@ namespace CRUD
 
         public void Add(TKey key, TValue value)
         {
-            CheckKeyDuplicate(key);
-            int bucketNumber = GetBucket(key);
-            int elementIndex = CheckFreePosition();
-
-            elements[elementIndex] = new Element<TKey, TValue>(key, value, buckets[bucketNumber]);
-            buckets[bucketNumber] = elementIndex;
-            Count++;
+           CheckKeyDuplicate(key);
+           int bucketNumber = GetBucket(key);
+           int elementIndex = CheckFreePosition();
+           if (elements[elementIndex] != null)
+           {
+                freeIndex = elements[elementIndex].Next;
+           }
+           elements[elementIndex] = new Element<TKey, TValue>(key, value, buckets[bucketNumber]);
+           buckets[bucketNumber] = elementIndex;
+           Count++;
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
@@ -104,14 +99,14 @@ namespace CRUD
         {
             Count = 0;
             Array.Fill(buckets, -1);
+            Array.Fill(elements, default);
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            
-            if (ContainsKey(item.Key))
+            if (TryGetIndexOfKey(item.Key, out int index))
             {
-                return this[item.Key].Equals(item.Value);
+                return elements[index].Value.Equals(item.Value);
             }
 
             return false;
@@ -119,16 +114,7 @@ namespace CRUD
 
         public bool ContainsKey(TKey key)
         {
-            int bucketNumber = GetBucket(key);
-            for (int i = buckets[bucketNumber]; i > -1; i = elements[i].Next)
-            {
-                if (elements[i].Key.Equals(key))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return TryGetIndexOfKey(key, out _);
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -138,7 +124,7 @@ namespace CRUD
                 throw new ArgumentException("Array is smaller than dictionary");
             }
 
-            foreach (var current in elements)
+            foreach (var current in this)
             {
                 array.SetValue(current, arrayIndex++);
             }
@@ -146,52 +132,42 @@ namespace CRUD
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            foreach (var kvp in elements)
+            for(int i = 0; i < size; i++)
             {
-                if (kvp != null && kvp.Key != default && kvp.Value != default)
+                if (HasValue(elements[i]))
                 {
-                    yield return new KeyValuePair<TKey, TValue>(kvp.Key, kvp.Value);
+                    yield return new KeyValuePair<TKey, TValue>(elements[i].Key, elements[i].Value);
                 }
             }
+        }
+
+        private bool HasValue(Element<TKey, TValue> kvp)
+        {
+            if (kvp != null && kvp.Key != default && kvp.Value != default)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool Remove(TKey key)
         {
-            CheckKey(key);
-
-            int bucketNumber = GetBucket(key);
-            int elementIndex = buckets[bucketNumber];
-            var first = elements[elementIndex];
-
-            for (int i = elementIndex; i > -1; i = first.Next)
+            if (TryGetIndexOfKey(key, out int index))
             {
-                int previous = i;
-                if (elements[i].Key.Equals(key))
-                {
-                    if (i != previous)
-                    {
-                        elements[previous].Next = elements[i].Next;
-                    }
-                    else
-                    {
-                        first.Next = elements[i].Next;
-                    }
-                    Delete(elements[i]);
-                    freeIndex = i;
-                    Count--;
-                    return true;
-                }
+                Delete(elements[index]);
+                freeIndex = index;
+                Count--;
+                return true;
             }
-            
+           
             return false;
-
         }
-       
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             return Remove(item.Key);
         }
-       
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -201,20 +177,22 @@ namespace CRUD
             if (TryGetIndexOfKey(key, out int index))
             {
                 value = elements[index].Value;
-            }
-            else
-            {
-                value = default;
+                return true;
             }
 
-            return value != default;
+            value = default;
+            return false;
         }
 
-        private bool TryGetIndexOfKey(TKey key, out int index)
+        public bool TryGetIndexOfKey(TKey key, out int index)
         {
-            for (index = 0; index < Count; index++)
+            int bucketNumber = GetBucket(key);
+            for (index = buckets[bucketNumber]; index > -1; index = elements[index].Next)
             {
-                if (elements[index].Key.Equals(key)) return true;
+                if (HasValue(elements[index]) && elements[index].Key.Equals(key))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -243,14 +221,6 @@ namespace CRUD
             if (ContainsKey(key))
             {
                 throw new ArgumentException("Key already exists");
-            }
-        }
-
-        private void CheckKey(TKey key)
-        {
-            if (!ContainsKey(key))
-            {
-                throw new ArgumentException("Key not found");
             }
         }
 

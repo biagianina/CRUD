@@ -8,12 +8,13 @@ namespace CRUD
     {
         static void Main()
         {
-            Dictionary<string, int> customersAge = new Dictionary<string, int>(4)
+            Dictionary<string, int> customersAge = new Dictionary<string, int>(5)
             {
                 {"Ana", 46 },
                 {"Bianca", 24 },
                 {"Vasile", 56 },
-                {"Casian",6 }
+                {"Casian",6 },
+                {"Alin", 24 }
             };
 
             foreach (var customer in customersAge)
@@ -42,7 +43,8 @@ namespace CRUD
                 
                 
             }
-
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
 
@@ -50,7 +52,8 @@ namespace CRUD
             {
                 Console.Write(value + " ");
             }
-
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
 
@@ -62,14 +65,22 @@ namespace CRUD
             }
 
             customersAge.Remove("Vasile");
+            customersAge.Remove("Casian");
 
-
+            Console.WriteLine();
+            Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine();
             foreach (var customer in customersAge)
             {
                 Console.WriteLine("{0} is {1} years old.\n", customer.Key, customer.Value);
             }
+            Console.WriteLine();
+            Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine();
 
             customersAge.Add("Adina", 20);
+            customersAge.Add("Alina", 26);
 
             foreach (var customer in customersAge)
             {
