@@ -29,7 +29,7 @@ namespace CRUD
                 }
                 else
                 {
-                    return default;
+                    throw new KeyNotFoundException("Key not in the dictionary");
                 }
             }
             set
