@@ -132,33 +132,44 @@ namespace CRUD
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            for(int i = 0; i < size; i++)
+            int freeElements = 0;
+            for(int i = 0; i < Count + freeElements; i++)
             {
-                if (HasValue(elements[i]))
+                if (HasValue(i))
                 {
                     yield return new KeyValuePair<TKey, TValue>(elements[i].Key, elements[i].Value);
+                }
+                else
+                {
+                    freeElements++;
                 }
             }
         }
 
-        private bool HasValue(Element<TKey, TValue> kvp)
+        private bool HasValue(int index)
         {
-            if (kvp != null && kvp.Key != default && kvp.Value != default)
+            for (int i = freeIndex; i != -1; i = elements[i].Next)
             {
-                return true;
+                if (index == i)
+                {
+                    return false;
+                }
             }
 
-            return false;
+            return true;
         }
 
         public bool Remove(TKey key)
         {
             if (TryGetIndexOfKey(key, out int index))
             {
-                Delete(elements[index]);
-                freeIndex = index;
-                Count--;
-                return true;
+                if (HasValue(index))
+                {
+                    Delete(elements[index]);
+                    freeIndex = index;
+                    Count--;
+                    return true;
+                }
             }
            
             return false;
@@ -189,7 +200,7 @@ namespace CRUD
             int bucketNumber = GetBucket(key);
             for (index = buckets[bucketNumber]; index > -1; index = elements[index].Next)
             {
-                if (HasValue(elements[index]) && elements[index].Key.Equals(key))
+                if (elements[index].Key.Equals(key))
                 {
                     return true;
                 }

@@ -38,7 +38,7 @@ namespace CRUD
             Assert.Equal("b", dictionary[2]);
             Assert.Equal("c", dictionary[6]);
             Assert.Equal("d", dictionary[7]);
-            Assert.Null(dictionary[3]);
+            Assert.Throws<KeyNotFoundException>(()=>dictionary[3]);
         }
 
         [Fact]
