@@ -76,11 +76,12 @@ namespace CRUD
             {
                 { 1, "a" },
                 { 2, "b" },
-                { 6, "c" },
-                { 7, "d" }
+                { 10, "c" },
+                { 7, "d" },
+                {12, "e" }
             };
-            int[] expected = { 1, 2, 6 };
-            string[] expectedValues = { "a", "b", "c" };
+            int[] expected = { 1, 2, 10 ,12};
+            string[] expectedValues = { "a", "b", "c" ,"e"};
             Assert.True(dictionary.Remove(7));
             Assert.Equal(expected, dictionary.Keys);
             Assert.Equal(expectedValues, dictionary.Values);

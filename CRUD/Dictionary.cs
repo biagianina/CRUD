@@ -23,14 +23,12 @@ namespace CRUD
         {
             get
             {
-                if (TryGetIndexOfKey(key, out int index))
-                {
-                    return elements[index].Value;
-                }
-                else
+                if (!TryGetIndexOfKey(key, out int index))
                 {
                     throw new KeyNotFoundException("Key not in the dictionary");
                 }
+                return elements[index].Value;
+
             }
             set
             {
@@ -163,17 +161,41 @@ namespace CRUD
         {
             if (TryGetIndexOfKey(key, out int index))
             {
-                if (HasValue(index))
-                {
-                    Delete(elements[index]);
-                    freeIndex = index;
-                    Count--;
-                    return true;
-                }
+                SetPrevious(index);
+                Delete(elements[index]);
+                freeIndex = index;
+                Count--;
+                return true;
             }
            
             return false;
         }
+
+        private void SetPrevious(int index)
+        {
+            int bucket = GetBucket(elements[index].Key);
+            if (index == buckets[bucket])
+            {
+                buckets[bucket] = elements[index].Next;
+            }
+            else
+            {
+                var first = elements[buckets[bucket]];
+                for (int i = first.Next; i > -1; i = elements[i].Next)
+                {
+                    int previous = i;
+                    if (i != previous)
+                    {
+                        elements[previous].Next = elements[i].Next;
+                    }
+                    else
+                    {
+                        first.Next = elements[i].Next;
+                    }
+                }
+            }
+        }
+
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             return Remove(item.Key);
