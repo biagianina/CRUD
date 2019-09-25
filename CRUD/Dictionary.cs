@@ -117,6 +117,8 @@ namespace CRUD
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
+            CheckIndexOutOfRange(arrayIndex);
+
             if (Count > array.Length)
             {
                 throw new ArgumentException("Array is smaller than dictionary");
@@ -177,8 +179,6 @@ namespace CRUD
            
             return false;
         }
-
-       
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             return Remove(item.Key);
@@ -215,6 +215,7 @@ namespace CRUD
                 {
                     return true;
                 }
+
                 prev = index;
             }
 
@@ -260,6 +261,16 @@ namespace CRUD
             }
 
             return Count;
+        }
+
+        private void CheckIndexOutOfRange(int index)
+        {
+            if (index >= 0 && index < Count)
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException("Index is not in the ranges of the array");
         }
     }
 }
