@@ -159,9 +159,16 @@ namespace CRUD
 
         public bool Remove(TKey key)
         {
-            if (TryGetIndexOfKey(key, out int index))
+            if (TryGetIndexOfKey(key, out int index, out int prev))
             {
-                SetPrevious(index);
+                if (prev == -1)
+                {
+                    buckets[GetBucket(key)] = elements[index].Next;
+                }
+                else
+                {
+                    elements[prev].Next = elements[index].Next;
+                }
                 Delete(elements[index]);
                 freeIndex = index;
                 Count--;
@@ -171,31 +178,7 @@ namespace CRUD
             return false;
         }
 
-        private void SetPrevious(int index)
-        {
-            int bucket = GetBucket(elements[index].Key);
-            if (index == buckets[bucket])
-            {
-                buckets[bucket] = elements[index].Next;
-            }
-            else
-            {
-                var first = elements[buckets[bucket]];
-                for (int i = first.Next; i > -1; i = elements[i].Next)
-                {
-                    int previous = i;
-                    if (i != previous)
-                    {
-                        elements[previous].Next = elements[i].Next;
-                    }
-                    else
-                    {
-                        first.Next = elements[i].Next;
-                    }
-                }
-            }
-        }
-
+       
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             return Remove(item.Key);
@@ -219,13 +202,20 @@ namespace CRUD
 
         public bool TryGetIndexOfKey(TKey key, out int index)
         {
+            return TryGetIndexOfKey(key, out index, out int prev);
+        }
+
+        public bool TryGetIndexOfKey(TKey key, out int index, out int prev)
+        {
             int bucketNumber = GetBucket(key);
+            prev = -1;
             for (index = buckets[bucketNumber]; index > -1; index = elements[index].Next)
             {
                 if (elements[index].Key.Equals(key))
                 {
                     return true;
                 }
+                prev = index;
             }
 
             return false;
